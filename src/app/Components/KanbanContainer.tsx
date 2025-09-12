@@ -8,7 +8,6 @@ export default function KanbanContainer(): any {
 
     return (
         <>
-            Container
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <KanbanCategory category={'Scheduled'} tasks={scheduledTasks} />
                 <KanbanCategory category={'In-progress'} tasks={inProgressTasks} />
