@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 
 import Task from "./Task";
 
-export default function KanbanCategory({ category, tasks, onTaskStatusChange }): any {
+export default function KanbanCategory({ 
+  category, tasks, onTaskStatusChange, onConfirmDelete,
+}): any {
   return (
     <div
       className="kanban-category"
@@ -35,6 +37,7 @@ export default function KanbanCategory({ category, tasks, onTaskStatusChange }):
               tags={task.tags}
               createdAt={task.createdAt}
               onTaskStatusChange={event => onTaskStatusChange(event, task.id)}
+              onConfirmDelete={event => onConfirmDelete(event, task.id)}
             />
           )
         })

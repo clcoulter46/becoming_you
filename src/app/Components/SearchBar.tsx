@@ -15,7 +15,7 @@ export default function SearchBar(onChange): any {
         value={filterStatus}
         onChange={e => setFilterStatus(e.target.value)}
       >
-        <option value="all">View All</option>
+        <option value="all"> -</option>
         <option value="scheduled">Scheduled</option>
         <option value="inProgress">In-progress</option>
         <option value="done">Done</option>

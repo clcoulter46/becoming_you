@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-export default function TaskOperations({status, onStatusChange}) {
-    const [operation, setOperation] = useState('View All Options')
+export default function TaskStatusOperations({status, onStatusChange}) {
+    const [operation, setOperation] = useState('all')
 
     return (
         <div onChange={event => onStatusChange(event.target.value)}>
@@ -10,13 +10,12 @@ export default function TaskOperations({status, onStatusChange}) {
                 name="operation"
                 value={operation}
                 onChange={event => setOperation(event.target.value)}
+                style={{alignItems: "revert"}}
             >
-                <option value="viewAll">View All Options</option>
+                <option value="all"> - - - - - - - - - - - - </option>
                 {!(status === "scheduled") && <option value="scheduled">Mark Scheduled</option>}
                 {!(status === "in-progress") &&<option value="in-progress">Mark In-progress</option>}
                 {!(status === "done") &&<option value="done">Mark Done</option>}
-                <option value="edit">Edit Task</option>
-                <option value="delete">Delete Task</option>
             </select>
         </div>
     )

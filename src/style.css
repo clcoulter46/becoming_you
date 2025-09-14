@@ -34,3 +34,10 @@ body {
 .filter-bar {
   text-align: right;
 }
+
+.evenly-spaced-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-grow: 1;
+}

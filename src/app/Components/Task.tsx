@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import PrioritySelect from "./PrioritySelect";
-import TaskOperations from "./TaskOperations";
+import TaskStatusOperations from "./TaskStatusOperations";
+import DeleteModal from "./DeleteModal";
 
 export default function Task({
     id,
@@ -12,23 +14,39 @@ export default function Task({
     tags,
     createdAt,
     onTaskStatusChange,
+    onConfirmDelete
 }): any {
     const [open, setOpen] = useState(false)
     const [taskStatus, setTaskStatus] = useState(status)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const deleteModalRef = useRef(null)
 
     const toggle = () => {
         setOpen(!open)
     }
 
-    const onStatusChange = (option, id) => { 
-        if(['scheduled', 'in-progress', 'done'].includes(option) && option !== status){
+    const onStatusChange = (option, id) => {
+        if (['scheduled', 'in-progress', 'done'].includes(option) && option !== status) {
             setTaskStatus(option)
-            onTaskStatusChange(option, id)      
+            onTaskStatusChange(option, id)
         }
+    }
+
+    const onEditClick = () => {
+        console.log('edit')
+    }
+
+    const onDeleteClick = () => {
+        setShowDeleteModal(true)
+    }
+
+    const onBackClick = () => {
+        setShowDeleteModal(false)
     }
 
     return (
         <div
+            ref={deleteModalRef}
             style={{
                 border: "black solid 1px",
                 marginLeft: ".25rem",
@@ -45,9 +63,9 @@ export default function Task({
                     fontSize: "1.15rem"
                 }}
             >
-                {id} - <b>{title}</b> 
+                {id} - <b>{title}</b>
             </header>
-            {(description || tags)?
+            {(description || tags) ?
                 <div
                     className="collapsible-description"
                     onClick={toggle}
@@ -60,7 +78,7 @@ export default function Task({
                         </div>
                         : <div style={{ textAlign: "center" }}>[ - - - ]</div>
                     }
-                    
+
                 </div>
                 : ''}
             <div style={{
@@ -69,7 +87,21 @@ export default function Task({
                 <i>Assigned: {assignee} | created: {createdAt ? createdAt : '2025-09-01 11:59AM'}</i>
             </div>
             <b>Priority:</b> <PrioritySelect priority={priority} />
-            <div><TaskOperations status={taskStatus} onStatusChange={event => onStatusChange(event, id)}/></div>
+            <TaskStatusOperations status={taskStatus} onStatusChange={event => onStatusChange(event, id)} />
+            <div className="evenly-spaced-buttons">
+                <button onClick={() => onEditClick()}>Edit</button>
+                <button onClick={() => onDeleteClick()} style={{ color: "red" }}>Delete</button>
+            </div>
+            <div  />
+            {showDeleteModal && createPortal(
+                (<DeleteModal
+                    id={id}
+                    onConfirmDelete={event => onConfirmDelete(event, id)}
+                    onBackClick={onBackClick}
+                />),
+                deleteModalRef.current
+            )}
+            
         </div>
     );
 }
