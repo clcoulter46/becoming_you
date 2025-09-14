@@ -20,7 +20,6 @@ export default function KanbanContainer({ tasks }): any {
             setInProgressTasks(inProgressTaskList)
             setCompletedTasks(completedTaskList)
         }
-        console.log('huh')
     }, [tasks])
 
     useEffect(() => {
@@ -39,8 +38,8 @@ export default function KanbanContainer({ tasks }): any {
             const updatedTask = tasks.filter((task) => task.id === id)[0]
             updatedTask.status = status
             const updatedTaskList = await tasks.map(task => [updatedTask].find(o => o.id === task.id))
-            console.log('status change', updatedTaskList)
             setTaskList(updatedTaskList)
+
         } catch {
             return new Error(`updating task status Unsuccessful for task id ${id} - ${status} `)
         }
@@ -49,9 +48,9 @@ export default function KanbanContainer({ tasks }): any {
     const onConfirmDelete = async (id) => {
         try {
             const updatedTaskList = await tasks.filter((task) => task.id !== id)
-            console.log('update', updatedTaskList)
+            const deletedTaskIndex = tasks.findIndex((task) => task.id === id)
+            const newTaskList = tasks.splice(deletedTaskIndex, 1)
             setTaskList(updatedTaskList)
-            console.log('final', taskList)
         } catch {
             return new Error(`deleting task unsuccessful for task id ${id}`)
         }
@@ -73,7 +72,6 @@ export default function KanbanContainer({ tasks }): any {
                     flexGrow: "1"
                 }}
             >
-                <>{console.log('task list', taskList)}</>
                 {taskList ?
                     <>
                         <KanbanCategory
@@ -96,8 +94,6 @@ export default function KanbanContainer({ tasks }): any {
                         />
                     </>
                     : <div>Loading, please wait</div>}
-
-
             </div>
         </>
     );

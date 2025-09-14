@@ -24,6 +24,7 @@ export default function KanbanCategory({
         <b>{category}</b>
       </header>
       <div style={{ flexDirection: "column" }}>
+        {console.log('tasks?', tasks)}
         {tasks ? tasks.map((task) => {
           return (
             <Task
@@ -42,6 +43,7 @@ export default function KanbanCategory({
           )
         })
           : ''}
+          {/* empty state will go here */}
       </div>
     </div>
   );
