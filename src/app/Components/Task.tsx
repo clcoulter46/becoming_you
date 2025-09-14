@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import PrioritySelect from "./PrioritySelect";
+import TaskOperations from "./TaskOperations";
 
 export default function Task({
     id,
@@ -8,12 +10,21 @@ export default function Task({
     assignee,
     priority,
     tags,
-    createdAt
+    createdAt,
+    onTaskStatusChange,
 }): any {
     const [open, setOpen] = useState(false)
+    const [taskStatus, setTaskStatus] = useState(status)
 
     const toggle = () => {
         setOpen(!open)
+    }
+
+    const onStatusChange = (option, id) => { 
+        if(['scheduled', 'in-progress', 'done'].includes(option) && option !== status){
+            setTaskStatus(option)
+            onTaskStatusChange(option, id)      
+        }
     }
 
     return (
@@ -25,8 +36,8 @@ export default function Task({
                 marginBottom: ".25rem",
                 textAlign: "left",
                 padding: ".25rem",
+                backgroundColor: "#f5ede4"
             }}
-            onClick={toggle}
         >
             <header
                 style={{
@@ -34,22 +45,22 @@ export default function Task({
                     fontSize: "1.15rem"
                 }}
             >
-                {id} - <b>{title}</b>
+                {id} - <b>{title}</b> 
             </header>
-            {description ?
+            {(description || tags)?
                 <div
                     className="collapsible-description"
+                    onClick={toggle}
                 >
                     {open ?
                         <div>
                             <b>{description}</b>
                             <br />
-                            {priority.toUpperCase()}
-                            <br />
+                            {tags && <div><b>Tags:</b> {tags.map((tag) => <div key={tag}>- {tag}</div>)}</div>}
                         </div>
                         : <div style={{ textAlign: "center" }}>[ - - - ]</div>
                     }
-
+                    
                 </div>
                 : ''}
             <div style={{
@@ -57,6 +68,8 @@ export default function Task({
             }}>
                 <i>Assigned: {assignee} | created: {createdAt ? createdAt : '2025-09-01 11:59AM'}</i>
             </div>
+            <b>Priority:</b> <PrioritySelect priority={priority} />
+            <div><TaskOperations status={taskStatus} onStatusChange={event => onStatusChange(event, id)}/></div>
         </div>
     );
 }

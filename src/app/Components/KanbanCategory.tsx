@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import Task from "./Task";
 
-export default function KanbanCategory({ category, tasks }): any {
-  const [categoryTasks, setTasks] = useState([])
-
-  useEffect(() => {
-    console.log('blah')
-  }, [categoryTasks])
-
+export default function KanbanCategory({ category, tasks, onTaskStatusChange }): any {
   return (
     <div
       className="kanban-category"
@@ -20,7 +14,13 @@ export default function KanbanCategory({ category, tasks }): any {
         opacity: "0.7"
       }}
     >
-      <header style={{ textDecoration: "underline", fontSize: "1.25rem" }}><b>{category}</b></header>
+      <header
+        style={{
+          textDecoration: "underline",
+          fontSize: "1.25rem",
+        }}>
+        <b>{category}</b>
+      </header>
       <div style={{ flexDirection: "column" }}>
         {tasks ? tasks.map((task) => {
           return (
@@ -34,6 +34,7 @@ export default function KanbanCategory({ category, tasks }): any {
               status={task.status}
               tags={task.tags}
               createdAt={task.createdAt}
+              onTaskStatusChange={event => onTaskStatusChange(event, task.id)}
             />
           )
         })
