@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { createPortal } from "react-dom";
-import PrioritySelect from "./TaskOperations/PrioritySelect";
 import TaskStatusOperations from "./TaskOperations/TaskStatusOperations";
 import DeleteModal from "./Modals/DeleteModal";
 import EditModal from "./Modals/EditModal";
