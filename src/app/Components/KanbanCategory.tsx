@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import Task from "./Task";
 
 export default function KanbanCategory({ 
-  category, tasks, onTaskStatusChange, onConfirmDelete,
+  category, 
+  tasks, 
+  onTaskStatusChange, 
+  onConfirmDelete, 
+  onConfirmEdit,
 }): any {
   return (
     <div
@@ -24,7 +28,6 @@ export default function KanbanCategory({
         <b>{category}</b>
       </header>
       <div style={{ flexDirection: "column" }}>
-        {console.log('tasks?', tasks)}
         {tasks ? tasks.map((task) => {
           return (
             <Task
@@ -39,6 +42,7 @@ export default function KanbanCategory({
               createdAt={task.createdAt}
               onTaskStatusChange={event => onTaskStatusChange(event, task.id)}
               onConfirmDelete={event => onConfirmDelete(event, task.id)}
+              onConfirmEdit={event => onConfirmEdit(event)}
             />
           )
         })

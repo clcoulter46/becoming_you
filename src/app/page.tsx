@@ -2,7 +2,6 @@
 
 import KanbanContainer from './Components/KanbanContainer'
 import TitleBar from './Components/TitleBar'
-import SearchBar from './Components/SearchBar'
 
 import testDataJson from '../../../test-data.json'
 import { useEffect, useState } from 'react'
@@ -12,9 +11,9 @@ export default function Home(): any {
 
   useEffect(() => {
     let env = process.env.NODE_ENV
-    if (env === "development") {
+    // if (env === "development") {
       setTaskData(testDataJson.tasks)
-    }
+    // }
     // else statement with real data would go here in production case
     // TODO: authentication?
   }, [])
@@ -27,7 +26,6 @@ export default function Home(): any {
       style={{ display: 'flex', flexDirection: 'column' }}
     >
       <TitleBar />
-      <SearchBar />
       <KanbanContainer tasks={taskData} />
     </div>
   );

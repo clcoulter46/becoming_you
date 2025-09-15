@@ -41,3 +41,17 @@ body {
   justify-content: space-around;
   flex-grow: 1;
 }
+
+.button {
+  border: solid darkslategray;
+  padding: 3px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  opacity: 90%;
+}
+
+.search-bar {
+  border: solid grey;
+  margin-bottom: 3px;
+  padding: 3px;
+}

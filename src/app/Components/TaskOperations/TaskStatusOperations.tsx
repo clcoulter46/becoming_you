@@ -5,7 +5,7 @@ export default function TaskStatusOperations({status, onStatusChange}) {
 
     return (
         <div onChange={event => onStatusChange(event.target.value)}>
-            <label><b>Update: </b></label>
+            <label><b>Update task status: </b></label>
             <select
                 name="operation"
                 value={operation}

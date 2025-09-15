@@ -1,8 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import PrioritySelect from "./PrioritySelect";
-import TaskStatusOperations from "./TaskStatusOperations";
-import DeleteModal from "./DeleteModal";
+import PrioritySelect from "./TaskOperations/PrioritySelect";
+import TaskStatusOperations from "./TaskOperations/TaskStatusOperations";
+import DeleteModal from "./Modals/DeleteModal";
+import EditModal from "./Modals/EditModal";
 
 export default function Task({
     id,
@@ -14,12 +15,14 @@ export default function Task({
     tags,
     createdAt,
     onTaskStatusChange,
-    onConfirmDelete
+    onConfirmDelete,
+    onConfirmEdit,
 }): any {
     const [open, setOpen] = useState(false)
     const [taskStatus, setTaskStatus] = useState(status)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const deleteModalRef = useRef(null)
+    const [showEditModal, setShowEditModal] = useState(false)
+    const modalRef = useRef(null)
 
     const toggle = () => {
         setOpen(!open)
@@ -33,20 +36,31 @@ export default function Task({
     }
 
     const onEditClick = () => {
-        console.log('edit')
+        if (showDeleteModal) {
+            setShowDeleteModal(false)
+        }
+        setShowEditModal(true)
     }
 
     const onDeleteClick = () => {
+        if (showEditModal) {
+            setShowEditModal(false)
+        }
         setShowDeleteModal(true)
     }
 
     const onBackClick = () => {
         setShowDeleteModal(false)
+        setShowEditModal(false)
+    }
+
+    const onConfirmClick = () => {
+        setShowEditModal(false)
     }
 
     return (
         <div
-            ref={deleteModalRef}
+            ref={modalRef}
             style={{
                 border: "black solid 1px",
                 marginLeft: ".25rem",
@@ -84,24 +98,41 @@ export default function Task({
             <div style={{
                 fontFamily: 'Times'
             }}>
-                <i>Assigned: {assignee} | created: {createdAt ? createdAt : '2025-09-01 11:59AM'}</i>
+                <i>Assigned: {assignee} | created: {createdAt ? createdAt : '2025-09-01 11:59AM'} |
+                    Priority: {priority} | Tags: {tags.map((tag) => <i key={tag}>{tag} </i>)} </i>
             </div>
-            <b>Priority:</b> <PrioritySelect priority={priority} />
+            <hr />
             <TaskStatusOperations status={taskStatus} onStatusChange={event => onStatusChange(event, id)} />
+            <hr />
             <div className="evenly-spaced-buttons">
-                <button onClick={() => onEditClick()}>Edit</button>
-                <button onClick={() => onDeleteClick()} style={{ color: "red" }}>Delete</button>
+                <button onClick={() => onEditClick()} className="button">Edit</button>
+                <button onClick={() => onDeleteClick()} style={{ color: "red" }} className="button">Delete</button>
             </div>
-            <div  />
-            {showDeleteModal && createPortal(
-                (<DeleteModal
+            <div />
+            {showDeleteModal && createPortal((
+                <DeleteModal
                     id={id}
                     onConfirmDelete={event => onConfirmDelete(event, id)}
                     onBackClick={onBackClick}
                 />),
-                deleteModalRef.current
+                modalRef.current
             )}
-            
+            <div onSubmit={onConfirmClick}>
+                {showEditModal && createPortal((
+                    <EditModal
+                        id={id}
+                        title={title}
+                        description={description}
+                        assignee={assignee}
+                        tags={tags}
+                        priority={priority}
+                        onConfirmEdit={onConfirmEdit}
+                        onBackClick={onBackClick}
+                        onConfirmClick={onConfirmClick}
+                    />),
+                    modalRef.current
+                )}
+            </div>
         </div>
     );
 }

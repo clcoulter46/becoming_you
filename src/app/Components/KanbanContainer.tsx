@@ -33,6 +33,16 @@ export default function KanbanContainer({ tasks }): any {
         setCompletedTasks(completedTaskList)
     }, [taskList])
 
+    const onConfirmDelete = (id) => {
+        try {
+            const deletedTaskIndex = tasks.findIndex((task) => task.id === id)
+            const newTaskList = tasks.splice(deletedTaskIndex, 1)
+            setTaskList(newTaskList)
+        } catch {
+            return new Error(`deleting task unsuccessful for task id ${id}`)
+        }
+    }
+
     const onTaskStatusChange = async (status, id) => {
         try {
             const updatedTask = tasks.filter((task) => task.id === id)[0]
@@ -45,25 +55,36 @@ export default function KanbanContainer({ tasks }): any {
         }
     }
 
-    const onConfirmDelete = async (id) => {
+    const onConfirmEdit = async (e) => {
         try {
-            const updatedTaskList = await tasks.filter((task) => task.id !== id)
-            const deletedTaskIndex = tasks.findIndex((task) => task.id === id)
-            const newTaskList = tasks.splice(deletedTaskIndex, 1)
+            e.preventDefault()
+            const form = e.target
+            const formData = new FormData(form) 
+            const formJson = Object.fromEntries(formData.entries())
+
+            const updatedTask = tasks.filter((task) => task.id === Number(formJson.id))[0]
+            updatedTask.title = formJson.title
+            updatedTask.description = formJson.description
+            updatedTask.assignee = formJson.assignee
+            updatedTask.tags = String(formJson.tags).split(',')
+            updatedTask.priority = formJson.priority
+
+            const updatedTaskList = await tasks.map(task => [updatedTask].find(o => o.id === task.id))
             setTaskList(updatedTaskList)
         } catch {
-            return new Error(`deleting task unsuccessful for task id ${id}`)
+            return new Error(`Editing task unsuccesful`)
         }
     }
 
-    const onFilterChange = () => {
+    const onSearchSubmit = (e) => {
+        e.preventDefault()
         console.log('hi')
         // setFilterStatus('all')
     }
 
     return (
         <>
-            <SearchBar onChange={onFilterChange} />
+            <SearchBar onSearchSubmit={onSearchSubmit} />
             <div
                 style={{
                     display: 'flex',
@@ -79,18 +100,21 @@ export default function KanbanContainer({ tasks }): any {
                             tasks={scheduledTasks}
                             onTaskStatusChange={onTaskStatusChange}
                             onConfirmDelete={onConfirmDelete}
+                            onConfirmEdit={onConfirmEdit}
                         />
                         <KanbanCategory
                             category={"In-progress"}
                             tasks={inProgressTasks}
                             onTaskStatusChange={onTaskStatusChange}
                             onConfirmDelete={onConfirmDelete}
+                            onConfirmEdit={onConfirmEdit}
                         />
                         <KanbanCategory
                             category={"Done"}
                             tasks={doneTasks}
                             onTaskStatusChange={onTaskStatusChange}
                             onConfirmDelete={onConfirmDelete}
+                            onConfirmEdit={onConfirmEdit}
                         />
                     </>
                     : <div>Loading, please wait</div>}
