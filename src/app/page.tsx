@@ -18,7 +18,6 @@ export default function Home(): any {
     // TODO: authentication?
   }, [])
 
-  useEffect
 
   return (
     <div
@@ -30,3 +29,4 @@ export default function Home(): any {
     </div>
   );
 }
+ 

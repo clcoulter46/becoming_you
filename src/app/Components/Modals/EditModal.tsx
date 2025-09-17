@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
+import { heightAdjuster } from "@/app/utils";
+
 export default function EditModal({
     id,
     title,
@@ -20,15 +22,11 @@ export default function EditModal({
     const descriptionRef = useRef(null)
 
     useEffect(() => {
-        tagsRef.current.style.height = "0px"
-        const scrollHeight = tagsRef.current.scrollHeight;
-        tagsRef.current.style.height = scrollHeight + "px";
+        heightAdjuster(tagsRef)
     }, [newTags])
 
     useEffect(() => {
-        descriptionRef.current.style.height = "0px"
-        const scrollHeight = descriptionRef.current.scrollHeight;
-        descriptionRef.current.style.height = scrollHeight + "px";
+        heightAdjuster(descriptionRef)
     }, [newDescription])
 
     return (

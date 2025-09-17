@@ -3,7 +3,6 @@ import React, { useState } from "react";
 export default function PrioritySelect(priority): any {
     const [priorityStatus, setPriorityStatus] = useState(priority)
 
-
     return (
         <div>
             <select

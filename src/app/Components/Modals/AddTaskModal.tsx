@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 
+import { heightAdjuster } from '../../utils'
+
 export default function AddTaskModal({
     onConfirmAddTask,
     onExitClick,
-    onSubmitClick
 }): any {
     const [newTitle, setNewTitle] = useState('')
     const [newDescription, setNewDescription] = useState('')
@@ -14,15 +15,11 @@ export default function AddTaskModal({
     const descriptionRef = useRef(null)
 
     useEffect(() => {
-        tagsRef.current.style.height = "0px"
-        const scrollHeight = tagsRef.current.scrollHeight;
-        tagsRef.current.style.height = scrollHeight + "px";
+        heightAdjuster(tagsRef)
     }, [newTags])
 
     useEffect(() => {
-        descriptionRef.current.style.height = "0px"
-        const scrollHeight = descriptionRef.current.scrollHeight;
-        descriptionRef.current.style.height = scrollHeight + "px";
+        heightAdjuster(descriptionRef)
     }, [newDescription])
 
     return (
@@ -31,11 +28,12 @@ export default function AddTaskModal({
             <div style={{ flexDirection: "column" }}>
                 <div>
                     <label>
-                        <b>Title: {' '}</b>
+                        <b>Title*: {' '}</b>
                         <input
                             name="title"
                             value={newTitle}
                             onChange={e => setNewTitle(e.target.value)}
+                            required={true}
                         />
                     </label>
                 </div>
@@ -56,11 +54,12 @@ export default function AddTaskModal({
                 <div>
                     {/* TODO: be able to validate this from a list of names */}
                     <label>
-                        <b>Assignee: {' '}</b>
+                        <b>Assignee*: {' '}</b>
                         <input
                             name="assignee"
                             value={newAssignee}
                             onChange={e => setNewAssignee(e.target.value)}
+                            required={true}
                         />
                     </label>
                 </div>
@@ -93,8 +92,9 @@ export default function AddTaskModal({
             </div>
             <div className="evenly-spaced-buttons">
                 <button type="button" onClick={onExitClick} className="button">Back</button>
-                <button type="submit" className="button" onSubmit={onSubmitClick}>Confirm</button>
+                <button type="submit" className="button">Confirm</button>
             </div>
+            <i>Fields marked with * are required</i>
         </form>
     )
 }

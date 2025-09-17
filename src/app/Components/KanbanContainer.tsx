@@ -133,7 +133,6 @@ export default function KanbanContainer({ tasks }): any {
     }
 
     const onAddTaskClick = () => {
-        console.log('yeee')
         setShowAddModal(true)
     }
 
@@ -144,82 +143,106 @@ export default function KanbanContainer({ tasks }): any {
             const formData = new FormData(form)
             const formJson = Object.fromEntries(formData.entries())
 
-            let newTask: { [key: string]: any} = {}
-            newTask.id = tasks[tasks.length()-1].id + 1 
+            let newTask = {
+                id: 0,
+                title: '',
+                description: '',
+                assignee: '',
+                tags: [],
+                priority: '',
+                status: '',
+            }
+            var randomId = Math.floor(Math.random() * 90) + 15;
+            newTask.id = randomId
             //normally a database would just do this so I'm making something work for now
-            newTask.title = formJson.title
-            newTask.description = formJson.description
-            newTask.assignee = formJson.assignee
-            newTask.tags = String(formJson.tags).split(',')
-            newTask.priority = formJson.priority
+            newTask.title = String(formJson.title)
+            newTask.description = String(formJson?.description)
+            newTask.assignee = String(formJson.assignee)
+            if (formJson.tags) { 
+                // need to make this .map()
+                newTask.tags = String(formJson?.tags).split(',').join()
+            } 
+            newTask.priority = String(formJson?.priority)
             newTask.status = "scheduled"
-            newTask.createdAt = Date.now()
-
-            console.log('newtask', newTask)
-            setTaskList(taskList.push(newTask))
-        } catch {
+            const newDate = new Date();
+            newTask.createdAt = newDate.toLocaleString()
+            let updatedList
+            if (taskList) {
+                updatedList = taskList.push(newTask)
+            } else {
+                updatedList = [newTask]
+            }
+            
+            setTaskList(updatedList)
+            tasks.push(newTask)
+        } catch (error){
+            console.error('error', error)
             return new Error(`Unable to create new task`)
         }
+        setShowAddModal(false)
     }
 
     const onExitClick = () => {
         setShowAddModal(false)
     }
 
-    const onSubmitClick = () => {
-
-    }
-
     return (
         <div ref={addModalRef}>
-            <SearchBar
-                onKeywordClick={onKeywordClick}
-                onAssigneeClick={onAssigneeClick}
-                onTagClick={onTagClick}
-            />
-            <button className="button" onClick={() => onAddTaskClick()}>Add New Task</button>
-            {showAddModal && createPortal((
+            {showAddModal ? createPortal((
                 <AddTaskModal
                     onConfirmAddTask={onConfirmAddTask}
                     onExitClick={onExitClick}
-                    onSubmitClick={onSubmitClick}
                 />),
                 addModalRef.current
-            )}
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: "space-evenly",
-                    flexGrow: "1"
-                }}
-            >
-                {taskList ?
-                    <>
-                        <KanbanCategory
-                            category={"Scheduled"}
-                            tasks={scheduledTasks}
-                            onTaskStatusChange={onTaskStatusChange}
-                            onConfirmDelete={onConfirmDelete}
-                            onConfirmEdit={onConfirmEdit}
-                        />
-                        <KanbanCategory
-                            category={"In-progress"}
-                            tasks={inProgressTasks}
-                            onTaskStatusChange={onTaskStatusChange}
-                            onConfirmDelete={onConfirmDelete}
-                            onConfirmEdit={onConfirmEdit}
-                        />
-                        <KanbanCategory
-                            category={"Done"}
-                            tasks={doneTasks}
-                            onTaskStatusChange={onTaskStatusChange}
-                            onConfirmDelete={onConfirmDelete}
-                            onConfirmEdit={onConfirmEdit}
-                        />
-                    </>
-                    : <div>Loading, please wait</div>}
-            </div>
+            ) :
+                <div>
+                    <button
+                        className="button"
+                        onClick={() => onAddTaskClick()}
+                    >
+                        Add New Task
+                    </button>
+                    <SearchBar
+                        onKeywordClick={onKeywordClick}
+                        onAssigneeClick={onAssigneeClick}
+                        onTagClick={onTagClick}
+                    />
+
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: "space-evenly",
+                            flexGrow: "1"
+                        }}
+                    > 
+                        {taskList ?
+                            <>
+                                <KanbanCategory
+                                    category={"Scheduled"}
+                                    tasks={scheduledTasks}
+                                    onTaskStatusChange={onTaskStatusChange}
+                                    onConfirmDelete={onConfirmDelete}
+                                    onConfirmEdit={onConfirmEdit}
+                                />
+                                <KanbanCategory
+                                    category={"In-progress"}
+                                    tasks={inProgressTasks}
+                                    onTaskStatusChange={onTaskStatusChange}
+                                    onConfirmDelete={onConfirmDelete}
+                                    onConfirmEdit={onConfirmEdit}
+                                />
+                                <KanbanCategory
+                                    category={"Done"}
+                                    tasks={doneTasks}
+                                    onTaskStatusChange={onTaskStatusChange}
+                                    onConfirmDelete={onConfirmDelete}
+                                    onConfirmEdit={onConfirmEdit}
+                                />
+                            </>
+                            : <div>Loading, please wait</div>}
+                    </div>
+                </div>}
         </div>
     );
 }

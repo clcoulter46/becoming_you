@@ -97,7 +97,7 @@ export default function Task({
             <div style={{
                 fontFamily: 'Times'
             }}>
-                <i>Assigned: {assignee} | created: {createdAt ? createdAt : '2025-09-01 11:59AM'} |
+                <i>Assigned: {assignee} | created: {createdAt ? createdAt : '09-09-2025, 11:59:33 AM'} |
                     Priority: {priority} | Tags: {tags.map((tag) => <i key={tag}>{tag} </i>)} </i>
             </div>
             <hr />
