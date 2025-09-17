@@ -3,7 +3,7 @@
 import KanbanContainer from './Components/KanbanContainer'
 import TitleBar from './Components/TitleBar'
 
-import testDataJson from '../../../test-data.json'
+import testDataJson from '../../test-data.json'
 import { useEffect, useState } from 'react'
 
 export default function Home(): any {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import Task from "./Task";
 
@@ -46,8 +46,7 @@ export default function KanbanCategory({
             />
           )
         })
-          : ''}
-          {/* empty state will go here */}
+          : <div>No Tasks Yet!</div>}
       </div>
     </div>
   );

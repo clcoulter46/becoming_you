@@ -38,7 +38,9 @@ export default function SearchBar({
           onClick={e => onKeywordClick(e, keywordSearch)}
         >
           Search
-        </button>
+        </button> 
+        {/* TODO: make seach change when text changes */}
+        {/* and add a clear search button */}
       </div>
       <div
         style={{
@@ -59,6 +61,8 @@ export default function SearchBar({
         >
           Search
         </button>
+        {/* TODO: make seach change when text changes */}
+        {/* and add a clear search button */}
       </div>
       <div
         style={{
@@ -79,6 +83,8 @@ export default function SearchBar({
         >
           Search
         </button>
+        {/* TODO: make seach change when text changes */}
+        {/* and add a clear search button */}
       </div>
     </div>
   );

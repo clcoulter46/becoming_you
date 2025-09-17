@@ -1,0 +1,169 @@
+{
+    "tasks": [
+        {
+            "id": 1,
+            "title": "Take Pictures",
+            "description": "Ensure enough for each page of calendar plus cover page",
+            "status": "done",
+            "assignee": "person1",
+            "tags": ["field work", "photography"],
+            "createdAt": "",
+            "priority": "high",
+            "dueDate": ""
+        },
+        {
+            "id": 2,
+            "title": "Organize by category",
+            "description": "categories: season, borough, landscape/river/streetview, time of day",
+            "status": "in-progress",
+            "assignee": "person2",
+            "tags": ["admin" ,"sorting", "editing"],
+            "createdAt": "",
+            "priority": "medium",
+            "dueDate": ""
+        },
+        {
+            "id": 3,
+            "title": "Prioritize best photos",
+            "description": "want good mix of categories",
+            "status": "in-progress",
+            "assignee": "person1",
+            "tags": ["admin"],
+            "createdAt": "",
+            "priority": "high",
+            "dueDate": ""
+        },
+        {
+            "id": 4,
+            "title": "Narrow to 13 best pictures",
+            "description": "overall best goes on cover, order remaining pics by season and category. Includes editing photos",
+            "status": "in-progress",
+            "assignee": "person2",
+            "tags": ["admin", "sorting"],
+            "createdAt": "",
+            "priority": "high",
+            "dueDate": ""
+        },
+        {
+            "id": 5,
+            "title": "Create cover/title page",
+            "description": "Crop best photo to fit aspect ratio. Add titles & subtitles",
+            "status": "scheduled",
+            "assignee": "person1",
+            "tags": ["admin", "template"],
+            "createdAt": "",
+            "priority": "high",
+            "dueDate": ""
+        },
+        {
+            "id": 6,
+            "title": "Create back cover",
+            "description": "Make a very close crop of cover photo. Add in copyright statement, titles and subtitles",
+            "status": "scheduled",
+            "assignee": "person1",
+            "tags": ["admin", "template"],
+            "createdAt": "",
+            "priority": "low",
+            "dueDate": ""
+        },
+        {
+            "id": 7,
+            "title": "Create January picture",
+            "description": "Add days-of-month box. Add description box. This is now the template for the other months",
+            "status": "scheduled",
+            "assignee": "person1",
+            "tags": ["admin", "template"],
+            "createdAt": "",
+            "priority": "high",
+            "dueDate": ""
+        },
+        {
+            "id": 8,
+            "title": "Duplicate and edit template for remaining 11 months",
+            "description": "",
+            "status": "scheduled",
+            "assignee": "person1",
+            "tags": ["template"],
+            "createdAt": "",
+            "priority": "medium",
+            "dueDate": ""
+        },
+        {
+            "id": 9,
+            "title": "Upload 13 pictures and back cover to production website",
+            "description": "Use lulu.com",
+            "status": "scheduled",
+            "assignee": "person2",
+            "tags": ["admin", "production"],
+            "createdAt": "",
+            "priority": "high",
+            "dueDate": ""
+        },
+        {
+            "id": 10,
+            "title": "Generate actual calendar templates",
+            "description": "",
+            "status": "scheduled",
+            "assignee": "person2",
+            "tags": ["production"],
+            "createdAt": "",
+            "priority": "high",
+            "dueDate": ""
+        },
+        {
+            "id": 11,
+            "title": "Create copy draft & proofread for mistakes",
+            "description": "",
+            "status": "scheduled",
+            "assignee": "person2",
+            "tags": ["admin", "proofreading", "production"],
+            "createdAt": "",
+            "priority": "high",
+            "dueDate": ""
+        },
+        {
+            "id": 12,
+            "title": "Finalize copy",
+            "description": "",
+            "status": "scheduled",
+            "assignee": "person1",
+            "tags": ["admin", "production"],
+            "createdAt": "",
+            "priority": "high",
+            "dueDate": ""
+        },
+        {
+            "id": 13,
+            "title": "Choose 4-5 best months for preview",
+            "description": "Consider pictures and description, ensure they are a good mixture of categories",
+            "status": "scheduled",
+            "assignee": "person1",
+            "tags": ["marketing"],
+            "createdAt": "",
+            "priority": "medium",
+            "dueDate": ""
+        },
+        {
+            "id": 14,
+            "title": "Publish calendar & generate sales link",
+            "description": "",
+            "status": "scheduled",
+            "assignee": "person2",
+            "tags": ["admin", "sales"],
+            "createdAt": "",
+            "priority": "high",
+            "dueDate": ""
+        },
+        {
+            "id": 15,
+            "title": "Create preview post and promote on social media",
+            "description": "Share on instagram, fb, and other spots. Ensure enough time for gift shopping to arrive in time.",
+            "status": "scheduled",
+            "assignee": "person2",
+            "tags": ["marketing", "social media"],
+            "createdAt": "",
+            "priority": "high",
+            "dueDate": "01-11-2025"
+        }
+    ]
+}
