@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-export default function SearchBar({
-  onKeywordClick,
-  onAssigneeClick,
-  onTagClick
-}): any {
+export interface Props {
+  onKeywordClick: Function,
+  onAssigneeClick: Function,
+  onTagClick: Function,
+}
+
+export default function SearchBar(props: Props): any {
   const [keywordSearch, setKeywordSearch] = useState("")
   const [assigneeSearch, setAssigneeSearch] = useState("")
   const [tagSearch, setTagSearch] = useState("")
@@ -31,11 +33,12 @@ export default function SearchBar({
           className="search-bar"
           name="keyword"
           value={keywordSearch}
+          // @ts-ignore
           onChange={e => setKeywordSearch(e.target.value)}
         />
         <button
           className="button"
-          onClick={e => onKeywordClick(e, keywordSearch)}
+          onClick={e => props.onKeywordClick(e, keywordSearch)}
         >
           Search
         </button> 
@@ -53,11 +56,12 @@ export default function SearchBar({
           className="search-bar"
           name="asignee"
           value={assigneeSearch}
+          // @ts-ignore
           onChange={e => setAssigneeSearch(e.target.value)}
         />
         <button
           className="button"
-          onClick={e => onAssigneeClick(e, assigneeSearch)}
+          onClick={e => props.onAssigneeClick(e, assigneeSearch)}
         >
           Search
         </button>
@@ -75,11 +79,12 @@ export default function SearchBar({
           className="search-bar"
           name="tags"
           value={tagSearch}
+          // @ts-ignore
           onChange={e => setTagSearch(e.target.value)}
         />
         <button
           className="button"
-          onClick={e => onTagClick(e, tagSearch)}
+          onClick={e => props.onTagClick(e, tagSearch)}
         >
           Search
         </button>

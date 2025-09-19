@@ -4,21 +4,23 @@ import TaskStatusOperations from "./TaskOperations/TaskStatusOperations";
 import DeleteModal from "./Modals/DeleteModal";
 import EditModal from "./Modals/EditModal";
 
-export default function Task({
-    id,
-    title,
-    description,
-    status,
-    assignee,
-    priority,
-    tags,
-    createdAt,
-    onTaskStatusChange,
-    onConfirmDelete,
-    onConfirmEdit,
-}): any {
+export interface Props {
+    id: string,
+    title: string,
+    description: string,
+    status: string,
+    assignee: string,
+    priority: string,
+    tags: Array<string>,
+    createdAt: string,
+    onTaskStatusChange: Function,
+    onConfirmDelete: Function,
+    onConfirmEdit: Function
+}
+
+export default function Task(props: Props): any {
     const [open, setOpen] = useState(false)
-    const [taskStatus, setTaskStatus] = useState(status)
+    const [taskStatus, setTaskStatus] = useState(props.status)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
     const modalRef = useRef(null)
@@ -27,10 +29,11 @@ export default function Task({
         setOpen(!open)
     }
 
+    // @ts-ignore
     const onStatusChange = (option, id) => {
-        if (['scheduled', 'in-progress', 'done'].includes(option) && option !== status) {
+        if (['scheduled', 'in-progress', 'done'].includes(option) && option !== props.status) {
             setTaskStatus(option)
-            onTaskStatusChange(option, id)
+            props.onTaskStatusChange(option, id)
         }
     }
 
@@ -76,18 +79,18 @@ export default function Task({
                     fontSize: "1.15rem"
                 }}
             >
-                {id} - <b>{title}</b>
+                {props.id} - <b>{props.title}</b>
             </header>
-            {(description || tags) ?
+            {(props.description || props.tags) ?
                 <div
                     className="collapsible-description"
                     onClick={toggle}
                 >
                     {open ?
                         <div>
-                            <b>{description}</b>
+                            <b>{props.description}</b>
                             <br />
-                            {tags && <div><b>Tags:</b> {tags.map((tag) => <div key={tag}>- {tag}</div>)}</div>}
+                            {props.tags && <div><b>Tags:</b> {props.tags.map((tag) => <div key={tag}>- {tag}</div>)}</div>}
                         </div>
                         : <div style={{ textAlign: "center" }}>[ - - - ]</div>
                     }
@@ -97,11 +100,12 @@ export default function Task({
             <div style={{
                 fontFamily: 'Times'
             }}>
-                <i>Assigned: {assignee} | created: {createdAt ? createdAt : '09-09-2025, 11:59:33 AM'} |
-                    Priority: {priority} | Tags: {tags.map((tag) => <i key={tag}>{tag} </i>)} </i>
+                <i>Assigned: {props.assignee} | created: {props.createdAt ? props.createdAt : '09-09-2025, 11:59:33 AM'} |
+                    Priority: {props.priority} | Tags: {props.tags.map((tag) => <i key={tag}>{tag} </i>)} </i>
             </div>
             <hr />
-            <TaskStatusOperations status={taskStatus} onStatusChange={event => onStatusChange(event, id)} />
+            {/* @ts-ignore */}
+            <TaskStatusOperations status={taskStatus} onStatusChange={event => onStatusChange(event, props.id)} />
             <hr />
             <div className="evenly-spaced-buttons">
                 <button onClick={() => onEditClick()} className="button">Edit</button>
@@ -110,25 +114,28 @@ export default function Task({
             <div />
             {showDeleteModal && createPortal((
                 <DeleteModal
-                    id={id}
-                    onConfirmDelete={event => onConfirmDelete(event, id)}
+                    id={props.id}
+                    // @ts-ignore
+                    onConfirmDelete={event => props.onConfirmDelete(event, props.id)}
                     onBackClick={onBackClick}
                 />),
+                // @ts-ignore
                 modalRef.current
             )}
             <div onSubmit={onConfirmClick}>
                 {showEditModal && createPortal((
                     <EditModal
-                        id={id}
-                        title={title}
-                        description={description}
-                        assignee={assignee}
-                        tags={tags}
-                        priority={priority}
-                        onConfirmEdit={onConfirmEdit}
+                        id={props.id}
+                        title={props.title}
+                        description={props.description}
+                        assignee={props.assignee}
+                        tags={props.tags}
+                        priority={props.priority}
+                        onConfirmEdit={props.onConfirmEdit}
                         onBackClick={onBackClick}
                         onConfirmClick={onConfirmClick}
                     />),
+                    // @ts-ignore
                     modalRef.current
                 )}
             </div>

@@ -4,7 +4,13 @@ import KanbanCategory from "./KanbanCategory";
 import SearchBar from "./SearchBar"
 import AddTaskModal from "./Modals/AddTaskModal";
 
-export default function KanbanContainer({ tasks }): any {
+export interface Props {
+    tasks: any
+}
+
+export default function KanbanContainer(props: Props): any {
+    let { tasks } = props
+
     const [scheduledTasks, setScheduledTasks] = useState([])
     const [inProgressTasks, setInProgressTasks] = useState([])
     const [doneTasks, setCompletedTasks] = useState([])
@@ -16,9 +22,12 @@ export default function KanbanContainer({ tasks }): any {
     useEffect(() => {
         // just for inital render
         if (tasks.length > 0) {
-            let scheduledTaskList = tasks.filter((task: Object) => task?.status === "scheduled")
-            let inProgressTaskList = tasks.filter((task: Object) => task?.status === "in-progress")
-            let completedTaskList = tasks.filter((task: Object) => task?.status === "done")
+            // @ts-ignore
+            let scheduledTaskList: any = tasks.filter((task: Object) => task?.status === "scheduled")
+            // @ts-ignore
+            let inProgressTaskList: any = tasks.filter((task: Object) => task?.status === "in-progress")
+            // @ts-ignore
+            let completedTaskList: any = tasks.filter((task: Object) => task?.status === "done")
 
             setScheduledTasks(scheduledTaskList)
             setInProgressTasks(inProgressTaskList)
@@ -28,9 +37,12 @@ export default function KanbanContainer({ tasks }): any {
 
     useEffect(() => {
         //repeating this block for react storage reasons
-        let scheduledTaskList = tasks.filter((task: Object) => task?.status === "scheduled")
-        let inProgressTaskList = tasks.filter((task: Object) => task?.status === "in-progress")
-        let completedTaskList = tasks.filter((task: Object) => task?.status === "done")
+        // @ts-ignore
+        let scheduledTaskList: any = tasks.filter((task: Object) => task?.status === "scheduled")
+        // @ts-ignore
+        let inProgressTaskList: any = tasks.filter((task: Object) => task?.status === "in-progress")
+        // @ts-ignore
+        let completedTaskList: any = tasks.filter((task: Object) => task?.status === "done")
 
         setScheduledTasks(scheduledTaskList)
         setInProgressTasks(inProgressTaskList)
@@ -38,8 +50,11 @@ export default function KanbanContainer({ tasks }): any {
     }, [taskList])
 
     useEffect(() => {
+        // @ts-ignore
         let scheduledTaskList = filterList.filter((task: Object) => task?.status === "scheduled")
+        // @ts-ignore
         let inProgressTaskList = filterList.filter((task: Object) => task?.status === "in-progress")
+        // @ts-ignore
         let completedTaskList = filterList.filter((task: Object) => task?.status === "done")
 
         setScheduledTasks(scheduledTaskList)
@@ -47,8 +62,9 @@ export default function KanbanContainer({ tasks }): any {
         setCompletedTasks(completedTaskList)
     }, [filterList])
 
-    const onConfirmDelete = (id) => {
+    const onConfirmDelete = (id: Number) => {
         try {
+            // @ts-ignore
             const deletedTaskIndex = tasks.findIndex((task) => task.id === id)
             const newTaskList = tasks.splice(deletedTaskIndex, 1)
             setTaskList(newTaskList)
@@ -57,11 +73,14 @@ export default function KanbanContainer({ tasks }): any {
         }
     }
 
-    const onTaskStatusChange = async (status, id) => {
+    const onTaskStatusChange = async (status: String, id: Number) => {
         try {
+            // @ts-ignore
             const updatedTask = tasks.filter((task) => task.id === id)[0]
+            // @ts-ignore
             updatedTask.status = status
-            const updatedTaskList = await tasks.map(task => [updatedTask].find(o => o.id === task.id))
+            // @ts-ignore
+            const updatedTaskList: any = await tasks.map(task => [updatedTask].find(o => o.id === task.id))
             setTaskList(updatedTaskList)
 
         } catch {
@@ -69,20 +88,30 @@ export default function KanbanContainer({ tasks }): any {
         }
     }
 
-    const onConfirmEdit = async (e) => {
+    const onConfirmEdit = async (e: Event) => {
         e.preventDefault()
         try {
             const form = e.target
+            // @ts-ignore
             const formData = new FormData(form)
             const formJson = Object.fromEntries(formData.entries())
 
-            const updatedTask = tasks.filter((task) => task.id === Number(formJson.id))[0]
+            let updatedTask: any = {
+                title: "",
+                description: "",
+                assignee: "",
+                tags: "",
+                priority: "",
+            }
+            // @ts-ignore
+            updatedTask = tasks.filter((task) => task.id === Number(formJson.id))[0]
             updatedTask.title = formJson.title
             updatedTask.description = formJson.description
             updatedTask.assignee = formJson.assignee
             updatedTask.tags = String(formJson.tags).split(',')
             updatedTask.priority = formJson.priority
 
+            // @ts-ignore
             const updatedTaskList = await tasks.map(task => [updatedTask].find(o => o.id === task.id))
             setTaskList(updatedTaskList)
         } catch {
@@ -90,10 +119,11 @@ export default function KanbanContainer({ tasks }): any {
         }
     }
 
-    const onKeywordClick = async (e, keyword) => {
+    const onKeywordClick = async (e: Event, keyword: String) => {
         e.preventDefault()
         try {
-            const filteredList = await tasks.filter((task) => {
+            // @ts-ignore
+            const filteredList: any = await tasks.filter((task) => {
                 const listValues = Object.values(task)
                 return listValues.some((value) => {
                     return String(value).toLowerCase().includes(keyword.toLowerCase())
@@ -105,30 +135,35 @@ export default function KanbanContainer({ tasks }): any {
         }
     }
 
-    const onAssigneeClick = async (e, assignee) => {
+    const onAssigneeClick = async (e: Event, assignee: String) => {
         e.preventDefault()
         try {
-            const filteredList = await tasks.filter((task) => {
+            // @ts-ignore
+            const filteredList: any = await tasks.filter((task) => {
+                // @ts-ignore
                 return String(task.assignee).toLowerCase().includes(assignee.toLowerCase())
             })
             setFilterList(filteredList)
         } catch {
-            return new Error(`Searching for keyword ${keyword} unsuccessful`)
+            return new Error(`Searching for assignee ${assignee} unsuccessful`)
         }
     }
 
-    const onTagClick = async (e, tag) => {
+    const onTagClick = async (e: Event, tag: String) => {
         e.preventDefault()
         try {
-            const filteredList = await tasks.filter((task) => {
+            // @ts-ignore
+            const filteredList: any = await tasks.filter((task) => {
+                // @ts-ignore
                 const listValues = task.tags
+                // @ts-ignore
                 return listValues.some((value) => {
                     return String(value).toLowerCase().includes(tag.toLowerCase())
                 })
             })
             setFilterList(filteredList)
         } catch {
-            return new Error(`Searching for keyword ${keyword} unsuccessful`)
+            return new Error(`Searching for tag ${tag} unsuccessful`)
         }
     }
 
@@ -136,10 +171,11 @@ export default function KanbanContainer({ tasks }): any {
         setShowAddModal(true)
     }
 
-    const onConfirmAddTask = (e) => {
+    const onConfirmAddTask = (e: Event) => {
         e.preventDefault()
         try {
             const form = e.target
+            // @ts-ignore
             const formData = new FormData(form)
             const formJson = Object.fromEntries(formData.entries())
 
@@ -159,14 +195,15 @@ export default function KanbanContainer({ tasks }): any {
             newTask.description = String(formJson?.description)
             newTask.assignee = String(formJson.assignee)
             if (formJson.tags) { 
-                // need to make this .map()
+                // @ts-ignore
                 newTask.tags = String(formJson?.tags).split(',').join()
             } 
             newTask.priority = String(formJson?.priority)
             newTask.status = "scheduled"
             const newDate = new Date();
+            // @ts-ignore
             newTask.createdAt = newDate.toLocaleString()
-            let updatedList
+            let updatedList: any
             if (taskList) {
                 updatedList = taskList.push(newTask)
             } else {
@@ -193,6 +230,7 @@ export default function KanbanContainer({ tasks }): any {
                     onConfirmAddTask={onConfirmAddTask}
                     onExitClick={onExitClick}
                 />),
+                // @ts-ignore
                 addModalRef.current
             ) :
                 <div>

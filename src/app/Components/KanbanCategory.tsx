@@ -2,13 +2,15 @@ import React from "react";
 
 import Task from "./Task";
 
-export default function KanbanCategory({ 
-  category, 
-  tasks, 
-  onTaskStatusChange, 
-  onConfirmDelete, 
-  onConfirmEdit,
-}): any {
+export interface Props {
+  category: String,
+  tasks: Array<Object>,
+  onTaskStatusChange: Function,
+  onConfirmDelete: Function,
+  onConfirmEdit: Function,
+}
+
+export default function KanbanCategory(props: Props): any {
   return (
     <div
       className="kanban-category"
@@ -25,10 +27,10 @@ export default function KanbanCategory({
           textDecoration: "underline",
           fontSize: "1.25rem",
         }}>
-        <b>{category}</b>
+        <b>{props.category}</b>
       </header>
       <div style={{ flexDirection: "column" }}>
-        {tasks ? tasks.map((task) => {
+        {props.tasks ? props.tasks.map((task: any) => {
           return (
             <Task
               id={task.id}
@@ -40,9 +42,12 @@ export default function KanbanCategory({
               status={task.status}
               tags={task.tags}
               createdAt={task.createdAt}
-              onTaskStatusChange={event => onTaskStatusChange(event, task.id)}
-              onConfirmDelete={event => onConfirmDelete(event, task.id)}
-              onConfirmEdit={event => onConfirmEdit(event)}
+              // @ts-ignore
+              onTaskStatusChange={event => props.onTaskStatusChange(event, task.id)}
+              // @ts-ignore
+              onConfirmDelete={event => props.onConfirmDelete(event, task.id)}
+              // @ts-ignore
+              onConfirmEdit={event => props.onConfirmEdit(event)}
             />
           )
         })
